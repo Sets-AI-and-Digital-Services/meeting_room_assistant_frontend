@@ -43,10 +43,10 @@ export function ChatMessages({
           key={i}
           className={
             b.kind === "error"
-              ? "max-w-[85%] rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-100 ring-1 ring-rose-400/20"
+              ? "max-w-[85%] rounded-2xl bg-rose-500/10 p-4 text-base text-rose-100 ring-1 ring-rose-400/20"
               : b.kind === "warn"
-              ? "max-w-[85%] rounded-2xl bg-amber-400/10 p-4 text-sm text-amber-100 ring-1 ring-amber-300/15"
-              : "max-w-[85%] rounded-2xl bg-white/7 p-4 text-sm text-white/70 ring-1 ring-white/10"
+                ? "max-w-[85%] rounded-2xl bg-amber-400/10 p-4 text-base text-amber-100 ring-1 ring-amber-300/15"
+                : "max-w-[85%] rounded-2xl bg-white/7 p-4 text-base text-white/70 ring-1 ring-white/10"
           }
         >
           {b.text}
@@ -54,7 +54,7 @@ export function ChatMessages({
       ))}
 
       {isSending ? (
-        <div className="max-w-[85%] rounded-2xl bg-white/7 p-4 text-sm text-white/70 ring-1 ring-white/10">
+        <div className="max-w-[85%] rounded-2xl bg-white/7 p-4 text-base text-white/70 ring-1 ring-white/10">
           Thinking…
         </div>
       ) : null}

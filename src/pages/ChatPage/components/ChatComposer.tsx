@@ -30,12 +30,14 @@ export function ChatComposer({
         <button
           type="submit"
           disabled={disabled || isSending || !value.trim()}
-          className="px-4 py-2 text-xs rounded-xl bg-white/10 text-white/80 ring-1 ring-white/10 hover:bg-white/15 disabled:opacity-50"
+          className="px-4 py-2 text-sm rounded-xl bg-white/10 text-white/80 ring-1 ring-white/10 hover:bg-white/15 disabled:opacity-50"
         >
           Send
         </button>
       </form>
-      <div className="mt-2 text-xs text-white/35">Session is created automatically on page open.</div>
+      <div className="mt-2 text-sm text-white/35">
+        Session is created automatically on page open.
+      </div>
     </div>
   );
 }

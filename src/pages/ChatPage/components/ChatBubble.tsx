@@ -15,8 +15,8 @@ export function ChatBubble({
       <div
         className={
           isUser
-            ? "rounded-2xl bg-emerald-500/12 p-4 text-sm text-white ring-1 ring-emerald-300/15"
-            : "rounded-2xl bg-white/7 p-4 text-sm text-white/90 ring-1 ring-white/10"
+            ? "rounded-2xl bg-emerald-500/12 p-4 text-base text-white ring-1 ring-emerald-300/15"
+            : "rounded-2xl bg-white/7 p-4 text-base text-white/90 ring-1 ring-white/10"
         }
       >
         {m.text}
