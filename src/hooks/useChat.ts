@@ -11,7 +11,7 @@ export function useChat(sessionId: string | null, config: ChatConfig) {
         {
             id: uid(),
             role: "assistant",
-            text: 'Hi! Describe your meeting like: “RM-101, tomorrow 10:00 to 11:00, 10 people, conference call”.',
+            text: 'Hi! Describe your meeting like: “Tomorrow 10:00 to 11:00, 10 people, conference call”.',
             ts: Date.now(),
         },
     ]);
