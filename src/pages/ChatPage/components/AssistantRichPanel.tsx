@@ -40,10 +40,14 @@ export function AssistantRichPanel({
   roomOptions,
   roomBookings,
   onSelectRoom,
+  bookedBookingId,
+  onSendRoomId,
 }: {
   roomOptions?: RoomOption[];
   roomBookings?: RoomBooking[];
   onSelectRoom?: (roomId: string) => void;
+  bookedBookingId: string | null;
+  onSendRoomId: any;
 }) {
   const hasRooms = Array.isArray(roomOptions) && roomOptions.length > 0;
   const hasBookings = Array.isArray(roomBookings) && roomBookings.length > 0;
@@ -78,7 +82,18 @@ export function AssistantRichPanel({
                       {r.RoomName}
                     </div>
                     <div className="mt-1 text-base text-white/55">
-                      {r.Building} • Floor {r.Floor} • {r.RoomID}
+                      {r.Building} • Floor {r.Floor} •{" "}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSendRoomId?.(r.RoomID);
+                        }}
+                        className="underline underline-offset-4 decoration-white/20 hover:decoration-white/40 text-white/70 hover:text-white/85"
+                        title="Send Room ID"
+                      >
+                        {r.RoomID}
+                      </button>
                     </div>
                   </div>
 
@@ -171,15 +186,33 @@ export function AssistantRichPanel({
                     {list
                       .slice()
                       .sort((a, b) => a.StartTime.localeCompare(b.StartTime))
-                      .map((b) => (
-                        <span
-                          key={b.BookingID}
-                          className="inline-flex items-center gap-2 rounded-full bg-rose-500/10 px-3 py-1 text-[11px] text-rose-100 ring-1 ring-rose-400/15"
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-rose-400" />
-                          {b.StartTime}–{b.EndTime}
-                        </span>
-                      ))}
+                      .map((b) => {
+                        const isBookedNow =
+                          bookedBookingId && b.BookingID === bookedBookingId;
+
+                        return (
+                          <span
+                            key={b.BookingID}
+                            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] ring-1 ${
+                              isBookedNow
+                                ? "bg-emerald-500/15 text-emerald-200 ring-emerald-400/20"
+                                : "bg-rose-500/10 text-rose-100 ring-rose-400/15"
+                            }`}
+                          >
+                            <span
+                              className={`h-1.5 w-1.5 rounded-full ${
+                                isBookedNow ? "bg-emerald-400" : "bg-rose-400"
+                              }`}
+                            />
+                            {b.StartTime}–{b.EndTime}
+                            {isBookedNow ? (
+                              <span className="ml-1 rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-white/55 ring-1 ring-white/10">
+                                ID: {b.BookingID}
+                              </span>
+                            ) : null}
+                          </span>
+                        );
+                      })}
                   </div>
                 </div>
               ))}

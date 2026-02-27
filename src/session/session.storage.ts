@@ -16,3 +16,11 @@ export function setSessionId(id: string) {
     // ignore
   }
 }
+
+export function clearSessionId() {
+  try {
+    localStorage.removeItem(KEY);
+  } catch {
+    // ignore
+  }
+}

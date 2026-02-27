@@ -13,6 +13,7 @@ import { defaultParseBotText } from "./parser";
 import { CalendarDrawer } from "../../calendar/CalendarDrawer";
 import { RoomCalendar } from "../../calendar/RoomCalendar";
 import type { RoomBooking } from "./types";
+import { clearSessionId } from "../../session/session.storage";
 
 export default function ChatPage() {
   const { sessionId, isReady, hasError } = useSessionBoot();
@@ -24,6 +25,21 @@ export default function ChatPage() {
 
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const latestBookedId = useMemo(() => {
+    for (let i = chat.messages.length - 1; i >= 0; i--) {
+      const m = chat.messages[i];
+      if (m.role === "assistant" && m.payload?.bookingId) {
+        return String(m.payload.bookingId);
+      }
+    }
+    return null;
+  }, [chat.messages]);
+
+  const onNewSession = useCallback(() => {
+    clearSessionId();
+    window.location.reload(); // triggers useSessionBoot to create a new one
+  }, []);
 
   // Pull bookings from the latest assistant message (until we have a calendar endpoint per room)
   const latestBookings: RoomBooking[] = useMemo(() => {
@@ -40,6 +56,14 @@ export default function ChatPage() {
     setSelectedRoomId(roomId);
     setIsCalendarOpen(true);
   }, []);
+
+  const onSendRoomId = useCallback(
+    (roomId: string) => {
+      chat.setInput(roomId);
+      chat.send();
+    },
+    [chat],
+  );
 
   const banners =
     !isReady && !hasError
@@ -106,6 +130,18 @@ export default function ChatPage() {
             <span className="text-sm text-white/75">
               {isReady ? "Connected" : hasError ? "Offline" : "Connecting…"}
             </span>
+
+            <span className="h-5 w-px bg-white/10" />
+
+            <button
+              type="button"
+              onClick={onNewSession}
+              disabled={!isReady} // optional: only allow when connected
+              className="text-sm text-white/75 hover:text-white disabled:opacity-50 disabled:hover:text-white/75"
+              title="Start a new session"
+            >
+              New Session
+            </button>
           </div>
         </motion.header>
 
@@ -203,6 +239,8 @@ export default function ChatPage() {
                 isSending={chat.isSending}
                 banners={banners}
                 onSelectRoom={onSelectRoom}
+                bookedBookingId={latestBookedId}
+                onSendRoomId={onSendRoomId}
               />
             </ChatShell>
           </motion.section>

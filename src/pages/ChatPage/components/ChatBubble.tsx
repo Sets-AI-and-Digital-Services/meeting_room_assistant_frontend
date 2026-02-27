@@ -4,9 +4,13 @@ import { AssistantRichPanel } from "./AssistantRichPanel";
 export function ChatBubble({
   m,
   onSelectRoom,
+  bookedBookingId,
+  onSendRoomId,
 }: {
   m: ChatMessage;
   onSelectRoom?: (roomId: string) => void;
+  bookedBookingId: string | null;
+  onSendRoomId: any;
 }) {
   const isUser = m.role === "user";
 
@@ -26,6 +30,8 @@ export function ChatBubble({
             roomOptions={m.payload?.roomOptions}
             roomBookings={m.payload?.roomBookings}
             onSelectRoom={onSelectRoom}
+            bookedBookingId={bookedBookingId}
+            onSendRoomId={onSendRoomId}
           />
         ) : null}
       </div>

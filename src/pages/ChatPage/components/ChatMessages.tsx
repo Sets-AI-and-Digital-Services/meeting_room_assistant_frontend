@@ -8,11 +8,15 @@ export function ChatMessages({
   isSending,
   banners,
   onSelectRoom,
+  bookedBookingId,
+  onSendRoomId,
 }: {
   messages: ChatMessage[];
   isSending: boolean;
   banners?: { kind: "info" | "warn" | "error"; text: string }[];
   onSelectRoom?: (roomId: string) => void;
+  bookedBookingId: string | null;
+  onSendRoomId: any;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +37,12 @@ export function ChatMessages({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
           >
-            <ChatBubble m={m} onSelectRoom={onSelectRoom} />
+            <ChatBubble
+              m={m}
+              onSelectRoom={onSelectRoom}
+              bookedBookingId={bookedBookingId}
+              onSendRoomId={onSendRoomId}
+            />
           </motion.div>
         ))}
       </AnimatePresence>
